@@ -75,12 +75,10 @@ const BookService = {
       let query = `mutation {
         createBook(input: {
           title: "${book.title}", 
-          category: ${book.category},
-          publisher: ${book.publisher},
-          author: ${book.author}
+          categoryId: ${book.category},
+          publisherId: ${book.publisher},
+          authorId: ${book.author}
         }) {
-          ok
-          book {
             id
             title
             category {
@@ -92,27 +90,23 @@ const BookService = {
             author {
               id
             }
-          }
         }
       }`
       let variables = null;
       let data = await Request.create(query, variables);
-      book = getBookObj(data.data.createBook.book);
+      book = getBookObj(data.data.createBook);
       return book;
     } else {
-      console.log("service save", book);
       let query = `mutation {
         updateBook(
           id: ${book.id}, 
           input: {
             title: "${book.title}", 
-            category: ${book.category},
-            publisher: ${book.publisher},
-            author: ${book.author}
+            categoryId: ${book.category},
+            publisherId: ${book.publisher},
+            authorId: ${book.author}
           }
         ){
-          ok
-          book {
             id
             title
             category {
@@ -124,24 +118,23 @@ const BookService = {
             author {
               id
             }
-          }
         }
       }`
       let variables = null;
       let data = await Request.update(query, variables);
-      book = getBookObj(data.data.updateBook.book);
+      book = getBookObj(data.data.updateBook);
       return book;
     }
   },
   delete: async (bookId) => {
     let query = `mutation {
-      deleteBook(id: ${bookId}) {
-        ok
+      deleteBook(id: ${bookId}){
+        id
       }
     }`
     let variables = null;
     let data = await Request.delete(query, variables);
-    if (data.data.deleteBook.ok) {
+    if (data.data.deleteBook) {
       return "deleted";
     } else {
       return "failed";

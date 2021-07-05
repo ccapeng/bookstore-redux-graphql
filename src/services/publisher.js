@@ -27,40 +27,34 @@ const PublisherService = {
     if (publisher.id === 0) {
       let query = `mutation {
         createPublisher(input: {name: "${publisher.name}"}) {
-          ok
-          publisher {
             id
             name
-          }
         }
       }`
       let variables = null;
       let data = await Request.create(query, variables);
-      return data.data.createPublisher.publisher;
+      return data.data.createPublisher;
     } else {
       let query = `mutation {
         updatePublisher(id: ${publisher.id}, input: {name: "${publisher.name}"}) {
-          ok
-          publisher {
             id
             name
-          }
         }
       }`
       let variables = null;
       let data = await Request.update(query, variables);
-      return data.data.updatePublisher.publisher;
+      return data.data.updatePublisher;
     }
   },
   delete: async (publisherId) => {
     let query = `mutation {
-      deletePublisher(id: ${publisherId}) {
-        ok
+      deletePublisher(id: ${publisherId}){
+        id
       }
     }`
     let variables = null;
     let data = await Request.delete(query, variables);
-    if (data.data.deletePublisher.ok) {
+    if (data.data.deletePublisher) {
       return "deleted";
     } else {
       return "failed";

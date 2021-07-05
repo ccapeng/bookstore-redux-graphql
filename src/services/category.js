@@ -27,40 +27,36 @@ const CategoryService = {
     if (category.id === 0) {
       let query = `mutation {
         createCategory(input: {name: "${category.name}"}) {
-          ok
-          category {
             id
             name
-          }
         }
       }`
       let variables = null;
       let data = await Request.create(query, variables);
-      return data.data.createCategory.category;
+      return data.data.createCategory;
     } else {
       let query = `mutation {
-        updateCategory(id: ${category.id}, input: {name: "${category.name}"}) {
-          ok
-          category {
+        updateCategory(
+          id: ${category.id}, 
+          input: {name: "${category.name}"}) {
             id
             name
-          }
         }
       }`
       let variables = null;
       let data = await Request.update(query, variables);
-      return data.data.updateCategory.category;
+      return data.data.updateCategory;
     }
   },
   delete: async (categoryId) => {
     let query = `mutation {
-      deleteCategory(id: ${categoryId}) {
-        ok
+      deleteCategory(id:${categoryId}){
+        id
       }
     }`
     let variables = null;
     let data = await Request.delete(query, variables);
-    if (data.data.deleteCategory.ok) {
+    if (data.data.deleteCategory) {
       return "deleted";
     } else {
       return "failed";

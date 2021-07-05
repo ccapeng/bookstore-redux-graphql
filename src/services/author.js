@@ -28,43 +28,46 @@ const AuthorService = {
   save: async (author) => {
     if (author.id === 0) {
       let query = `mutation {
-        createAuthor(input: {lastName: "${author.lastName}", firstName: "${author.firstName}"}) {
-          ok
-          author {
+        createAuthor(input: {
+          lastName: "${author.lastName}", 
+          firstName: "${author.firstName}"
+        }) {
             id
             lastName
             firstName
-          }
         }
       }`
       let variables = null;
       let data = await Request.create(query, variables);
-      return data.data.createAuthor.author;
+      return data.data.createAuthor;
     } else {
       let query = `mutation {
-        updateAuthor(id: ${author.id}, input: {lastName: "${author.lastName}", firstName: "${author.firstName}"}) {
-          ok
-          author {
+        updateAuthor(
+          id: ${author.id}, 
+          input: {
+            lastName: "${author.lastName}", 
+            firstName: "${author.firstName}"
+          }
+        ) {
             id
             lastName
             firstName
-          }
         }
       }`
       let variables = null;
       let data = await Request.update(query, variables);
-      return data.data.updateAuthor.author;
+      return data.data.updateAuthor;
     }
   },
   delete: async (authorId) => {
     let query = `mutation {
-      deleteAuthor(id: ${authorId}) {
-        ok
+      deleteAuthor(id: ${authorId}){
+        id
       }
     }`
     let variables = null;
     let data = await Request.delete(query, variables);
-    if (data.data.deleteAuthor.ok) {
+    if (data.data.deleteAuthor) {
       return "deleted";
     } else {
       return "failed";

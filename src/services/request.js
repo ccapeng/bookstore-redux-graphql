@@ -1,15 +1,17 @@
 import axios from "axios";
 
-const getHeaderConfig = () => {
-  return {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-}
+const gqlURL = process.env.REACT_APP_GQL_URL || 'http://127.0.0.1:3005/graphql/';
+//const gqlURL = process.env.REACT_APP_GQL_URL || 'http://127.0.0.1:8001/graphql/';
+const origin = process.env.REACT_APP_ORIGIN || 'http://127.0.0.1:3000/';
+const getHeaderConfig = () => ({
+  headers: {
+    "Content-Type": "application/json",
+    "Origin": origin
+  }
+})
 
 const getURL = () => {
-  return "http://127.0.0.1:8000/graphql/";
+  return gqlURL;
 }
 
 const Request = {
@@ -101,83 +103,3 @@ const Request = {
 }
 
 export default Request;
-
-// const getHeaderConfig = () => {
-//   return {
-//     headers: {
-//       "Content-Type": "application/json"
-//     }
-//   };
-// }
-
-// const getURL = (url) => {
-//   return `http://127.0.0.1:8000/${url}`;
-// }
-
-// const Request = {
-
-//   get: async (url) => {
-
-//     try {
-//       let result = await axios.get(
-//         getURL(url),
-//         getHeaderConfig()
-//       );
-//       return Promise.resolve(result.data);
-//     } catch (error) {
-//       console.log(error);
-//       return Promise.reject("get error");
-//     }
-
-//   },
-
-//   create: async (url, body) => {
-
-//     try {
-//       let result = await axios.post(getURL(url), body, getHeaderConfig());
-//       if (result.status === 201) {
-//         return Promise.resolve(result.data);
-//       } else {
-//         return Promise.reject(result.data);
-//       }
-//     } catch (error) {
-//       console.log(error);
-//       return Promise.reject("save error");
-//     }
-
-//   },
-
-//   update: async (url, body) => {
-
-//     try {
-//       let result = await axios.patch(getURL(url), body, getHeaderConfig());
-//       if (result.status === 200) {
-//         return Promise.resolve(result.data);
-//       } else {
-//         return Promise.reject(result.data);
-//       }
-//     } catch (error) {
-//       console.log(error);
-//       return Promise.reject("Save Error");
-//     }
-
-//   },
-
-//   delete: async (url) => {
-
-//     try {
-//       let result = await axios.delete(getURL(url), getHeaderConfig());
-//       if (result.status === 204) {
-//         return Promise.resolve("deleted");
-//       } else {
-//         return Promise.reject("failed");
-//       }
-//     } catch (error) {
-//       console.log(error);
-//       return Promise.reject("Delete Error");
-//     }
-
-//   }
-// }
-
-// export default Request;
